@@ -27,4 +27,20 @@
         </classes>
     </test>
 
+    <test name="Mobile Tests - Wikipedia" preserve-order="true">
+        <parameter name="platform" value="android"/>
+        <parameter name="environment" value="test"/>
+
+        <classes>
+            <class name="mobile.tests.WikipediaTests">
+                <methods>
+                    <include name="testAppLaunchAndSkipWelcome"/>
+                    <include name="testSearchArticle"/>
+                    <include name="testArticleTitleVerification"/>
+                    <include name="testBackNavigationFromArticle"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
 </suite>
