@@ -54,6 +54,14 @@ public class WikipediaTests extends MobileTestSetup {
         // Открываем первую статью
         searchPage.clickFirstResult();
 
+        // Возможно всплывающее окно
+        IntroducingPopup introducingPopup = new IntroducingPopup(driver);
+
+        if (introducingPopup.isDisplayed()) {
+            System.out.println("Всплывающее окно поймано! Закрываем...");
+            introducingPopup.closeBtn();
+        }
+
         ArticlePage articlePage = new ArticlePage(driver);
 
         // Проверяем, что статья открылась
