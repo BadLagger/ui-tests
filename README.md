@@ -2,41 +2,88 @@
 
 Автоматизированные тесты для веб- и мобильного приложения.
 
-## Структура проекта
+## Структура проекта ###
 ```
 src/test/java/
 ├── web/ # Веб-тесты
 │ ├── pages/ # Page Object модели
 │ ├── tests/ # Тестовые классы
 │ └── utils/ # Утилитные классы
-├── mobile/ # Мобильные тесты
-│ ├── pages/
-│ ├── tests/
-│ └── utils/
-└── resources/ # Ресурсы
+└─ mobile/ # Мобильные тесты
+  ├── pages/
+  ├── tests/
+  └── utils/
+
+```
+### Требования к ПО ###
+- Java 17+
+- Maven 3.6+
+- Chrome браузер
+- Android Studio 2025.2.2+
+- IntelliJ IDEA 2024.3.2 (Community Edition) +
+- Appium 3.1.2+
+- Node Package Manager 10.9.3+
+- APKM файл приложения wikipedia
+
+### Основные зависимости проекта (POM-файл) ###
+- Selenium 4.39.0
+- Webdrivermanager 6.3.3
+- TestNG 7.11.0
+- Appium 10.0.0
+Для логирования:
+- Slf4j 2.0.17
+- Lombok 1.18.42
+
+## Подготовка ##
+
+### Основной софт ###
+Перед запуском тестов необходимо установить требуемое ПО.
+Основные компоненты устанавливаются в обычном порядке. Единственный компонент, который требует 
+более менее не стандартного подхода это Appium. Для его установки требуется сначала установить Node Package Manager.
+После этого с помощью npm произвести установку appium:
+```
+npm install -g appium
+```
+
+### Настройка Android Studio и SDK ###
+После установки Android Studio необходимо установить виртуальную машину для тестирования приложения.
+Для этого после запуска Android Studio требуется в UI выбрать Device Manager и следуя указаниям установщика 
+добавить образ виртуальной машины Pixel 4a.
+
+После установки виртуальной машины требуется установить на неё приложение wikipedia. Для этого необходимо скачать:
+- APKM файл приложения wikipedia (например, https://www.apkmirror.com/apk/wikipedia-foundation/wikipedia/);
+- установить в переменные окружения ОС путь к Platform Tools Android SDK (для использования adb, Например: C:\Users\lanyn\AppData\Local\Android\Sdk\platform-tools);
+- запустить эмулятор Pixel 4a;
+- переименовать apkm файл с приложением в файл с расширением .zip и распаковать его;
+- с помощью adb установить wikipedia:
+```
+adb install-multiple base.apk split_config.x86_64.apk split_config.xxhdpi.apk
+```
+- убедиться, что приложение wikipedia установлено в эмуляторе (через UI);
+
+### Настройка Appium ###
+Перед начало использования Appium требуется прописать переменные окружения в ОС:
+
+ANDROID_HOME=<путь к SDK (Например: C:\Users\user\AppData\Local\Android\Sdk)>
+ANDROID_SDK_ROOT=<путь к SDK (Например: C:\Users\user\AppData\Local\Android\Sdk)>
+
+Установка нужного драйвера:
+```
+appium driver install uiautomator2
+```
+Запуск с нужным драйвером:
+```
+appium --use-drivers=uiautomator2
 ```
 
 ## Запуск тестов
 
-### Предварительные требования
-- Java 17+
-- Maven 3.6+
-- Chrome браузер
+1. Открыть проект в IntelliJ IDEA.
+2. Правой кнопкой мыши на testing.xml
+3. Run '.../testing.xml'
 
-### Запуск всех веб-тестов ###
-```
-mvn clean test
-```
+Примечание: при этом должен быть запущен эмулятор с установленным приложением wikipedia и appium.
 
-### Запуск через TestNG ###
-```
-mvn test -DsuiteXmlFile=testng.xml
-```
-
-### Запуск из IDE ###
-
-- Откройте testng.xml и запустите как TestNG Suite
-- Или запустите класс WebTests как TestNG тест
 
 ## Тестовые сценарии ##
 
@@ -50,26 +97,11 @@ mvn test -DsuiteXmlFile=testng.xml
 7. Динамическая загрузка элементов
 8. JavaScript Alerts
 
-### Технологии  ###
+Примечание: есть поддержка Smoke-тестирования (раскомментировать в файле testing.xml в случае необходимости)
 
-- Java 17
-- Selenium WebDriver 4.39.0
-- TestNG 7.11.0
-- WebDriverManager 6.3.3
-- Page Object Pattern
+## Тесты Android приложения Wikipedia (4 сценария) ##
+1. Запуск приложения и проверка страницы приветсвия
+2. Поиск определённой статьи и проверка её заголовка (2 теста для разных страниц)
+3. Проверка навигации "Назад"
+4. Проверка пустого поиска
 
-## Использование Appium ##
-
-Просмотр списка драйверов:
-```
-appium driver list
-```
-
-Установка нужного драйвера:
-```
-appium driver install uiautomator2
-```
-Запуск с нужным драйвером:
-```
-appium --use-drivers=uiautomator2
-```
