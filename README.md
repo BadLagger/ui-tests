@@ -57,3 +57,19 @@ mvn test -DsuiteXmlFile=testng.xml
 - TestNG 7.11.0
 - WebDriverManager 6.3.3
 - Page Object Pattern
+
+## Использование Appium ##
+
+Просмотр списка драйверов:
+```
+appium driver list
+```
+
+Установка нужного драйвера:
+```
+appium driver install uiautomator2
+```
+Запуск с нужным драйвером:
+```
+appium --use-drivers=uiautomator2
+```

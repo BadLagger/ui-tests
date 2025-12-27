@@ -28,7 +28,7 @@ public class WikipediaTests extends MobileTestSetup {
         System.out.println("✓ Приложение успешно запущено, главный экран отображается");
     }
 
-    @Test(priority = 2, description = "Тест поиска статьи")
+    @Test(priority = 2, description = "Тест поиска статьи 1")
     public void testSearchArticle() {
         System.out.println("Тест 2: Поиск статьи...");
 
@@ -39,9 +39,10 @@ public class WikipediaTests extends MobileTestSetup {
         }
 
         // Ищем статью
+        String text = "Appium";
         MainPage mainPage = new MainPage(driver);
         mainPage.clickSearchBox();
-        mainPage.enterSearchText("Appium");
+        mainPage.enterSearchText(text);
 
         SearchPage searchPage = new SearchPage(driver);
 
@@ -64,19 +65,19 @@ public class WikipediaTests extends MobileTestSetup {
 
         ArticlePage articlePage = new ArticlePage(driver);
 
-        // Проверяем, что статья открылась
-        Assert.assertTrue(articlePage.isArticleTitleDisplayed(),
+        System.out.println("Пробуем тапнуть в неактивную область для пропуска туториала!");
+        articlePage.missClick();
+
+        Assert.assertTrue(articlePage.isArticleTitleDisplayed(text),
                 "Заголовок статьи должен отображаться");
 
-        String articleTitle = articlePage.getArticleTitle();
-        Assert.assertTrue(articleTitle.contains("Appium"),
-                "Заголовок статьи должен содержать 'Appium'");
-
-        System.out.println("✓ Статья успешно найдена и открыта: " + articleTitle);
+        System.out.println("✓ Статья успешно найдена и открыта: " + text);
     }
 
-    @Test(priority = 3, description = "Тест проверки заголовка открытой статьи")
+    @Test(priority = 3, description = "Тест поиска статьи 2")
     public void testArticleTitleVerification() {
+        String text = "Selenium";
+
         System.out.println("Тест 3: Проверка заголовка статьи...");
 
         // Пропускаем welcome экран
@@ -88,29 +89,36 @@ public class WikipediaTests extends MobileTestSetup {
         // Ищем и открываем статью
         MainPage mainPage = new MainPage(driver);
         mainPage.clickSearchBox();
-        mainPage.enterSearchText("Selenium");
+        mainPage.enterSearchText(text);
 
         SearchPage searchPage = new SearchPage(driver);
         searchPage.clickFirstResult();
 
+        // Возможно всплывающее окно
+        IntroducingPopup introducingPopup = new IntroducingPopup(driver);
+
+        if (introducingPopup.isDisplayed()) {
+            System.out.println("Всплывающее окно поймано! Закрываем...");
+            introducingPopup.closeBtn();
+        }
+
         ArticlePage articlePage = new ArticlePage(driver);
 
+        System.out.println("Пробуем тапнуть в неактивную область для пропуска туториала!");
+        articlePage.missClick();
+
         // Получаем и проверяем заголовок
-        String title = articlePage.getArticleTitle();
-        Assert.assertNotNull(title, "Заголовок статьи не должен быть null");
-        Assert.assertFalse(title.isEmpty(), "Заголовок статьи не должен быть пустым");
+        Assert.assertTrue(articlePage.isArticleTitleDisplayed(text),
+                "Заголовок статьи должен отображаться");
 
-        // Проверяем, что заголовок содержит искомое слово
-        Assert.assertTrue(title.contains("Selenium") ||
-                        title.contains("селен") ||
-                        title.contains("Селен"),
-                "Заголовок должен содержать ключевое слово");
-
-        System.out.println("✓ Заголовок статьи проверен: " + title);
+        System.out.println("✓ Заголовок статьи проверен: " + text);
     }
 
     @Test(priority = 4, description = "Тест навигации назад из статьи")
     public void testBackNavigationFromArticle() {
+
+        String text = "Java";
+
         System.out.println("Тест 4: Навигация назад из статьи...");
 
         // Пропускаем welcome экран
@@ -122,16 +130,27 @@ public class WikipediaTests extends MobileTestSetup {
         // Ищем и открываем статью
         MainPage mainPage = new MainPage(driver);
         mainPage.clickSearchBox();
-        mainPage.enterSearchText("Java");
+        mainPage.enterSearchText(text);
 
         SearchPage searchPage = new SearchPage(driver);
         searchPage.clickFirstResult();
 
+        // Возможно всплывающее окно
+        IntroducingPopup introducingPopup = new IntroducingPopup(driver);
+
+        if (introducingPopup.isDisplayed()) {
+            System.out.println("Всплывающее окно поймано! Закрываем...");
+            introducingPopup.closeBtn();
+        }
+
         ArticlePage articlePage = new ArticlePage(driver);
 
-        // Запоминаем заголовок статьи
-        String articleTitle = articlePage.getArticleTitle();
+        System.out.println("Пробуем тапнуть в неактивную область для пропуска туториала!");
+        articlePage.missClick();
 
+        // Получаем и проверяем заголовок
+        Assert.assertTrue(articlePage.isArticleTitleDisplayed(text),
+                "Заголовок статьи должен отображаться");
         // Возвращаемся назад
         articlePage.clickBackButton();
 
@@ -140,7 +159,7 @@ public class WikipediaTests extends MobileTestSetup {
                         mainPage.isSearchBoxDisplayed(),
                 "После навигации назад должна отображаться либо страница поиска, либо главный экран");
 
-        System.out.println("✓ Навигация назад работает корректно. Была открыта статья: " + articleTitle);
+        System.out.println("✓ Навигация назад работает корректно. Была открыта статья: " + text);
     }
 
     @Test(priority = 5, description = "Тест пустого поиска")
